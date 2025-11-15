@@ -16,7 +16,7 @@ class BottomNavigationBarWidget extends StatelessWidget {
         BottomNavigationBarItem(
             icon: Icon(Icons.play_arrow_outlined), label: "Shorts"),
         BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle_outline, size: 40), label: ""),
+            icon: Icon(Icons.add_circle_outline, size: 30), label: ""),
         BottomNavigationBarItem(
             icon: Icon(Icons.subscriptions_sharp), label: "Subscriptions"),
         BottomNavigationBarItem(
