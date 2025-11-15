@@ -5,6 +5,7 @@ import 'package:flutter_youtube_clone/services/youtube_api_service.dart';
 import 'package:flutter_youtube_clone/widgets/appbar.dart';
 import 'package:flutter_youtube_clone/widgets/bottom_navigation_bar.dart';
 import 'package:flutter_youtube_clone/widgets/categorywise_widget.dart';
+import 'package:flutter_youtube_clone/widgets/video_list_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -110,9 +111,14 @@ class _HomePageState extends State<HomePage> {
                 controller: _scrollController,
                 slivers: [
                   SliverList(
-                      delegate: SliverChildBuilderDelegate((context, index) {
-                    return const Text("Video");
-                  }, childCount: _videos.length)),
+                      delegate: SliverChildListDelegate([
+                    VideoListWidget(
+                        videos: _videos,
+                        isLoading: _isLoading,
+                        onVideoSelected: (video) {
+                          //Navigator.push(context, route)
+                        }),
+                  ])),
                   if (_isLoadingMore)
                     const SliverToBoxAdapter(
                       child: Padding(
