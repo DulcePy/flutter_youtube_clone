@@ -13,6 +13,7 @@ dependencies:
   timeago: ^3.7.0
   youtube_explode_dart: ^2.5.1
   youtube_player_flutter: ^9.1.1
+  flutter_dotenv: ^5.2.1
 
 dev_dependencies:
   flutter_test:
@@ -23,3 +24,4 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - .env
