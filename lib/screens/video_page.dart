@@ -85,7 +85,7 @@ class _VideoPageState extends State<VideoPage> {
           },
           onFullScreenChange: (isFullScreen) {
             setState(() {
-              _isFullScreen=isFullScreen;
+              _isFullScreen = isFullScreen;
             });
           }),
     );
