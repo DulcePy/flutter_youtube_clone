@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_youtube_clone/helper.dart';
 import 'package:flutter_youtube_clone/models/video_model.dart';
+import 'package:flutter_youtube_clone/screens/video_page.dart';
 import 'package:flutter_youtube_clone/services/youtube_api_service.dart';
 import 'package:flutter_youtube_clone/widgets/appbar.dart';
 import 'package:flutter_youtube_clone/widgets/bottom_navigation_bar.dart';
@@ -116,7 +117,11 @@ class _HomePageState extends State<HomePage> {
                         videos: _videos,
                         isLoading: _isLoading,
                         onVideoSelected: (video) {
-                          //Navigator.push(context, route)
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      VideoPage(video: video)));
                         }),
                   ])),
                   if (_isLoadingMore)

@@ -32,16 +32,15 @@ class YoutubeApiService {
 
             if (query.isNotEmpty) {
               final List<VideoModel> videos = [];
+
               for (var item in items) {
                 final videoId = item['id']['videoId'];
                 final details = await getVideoDetails(videoId);
 
-                if (details != null) {
-                  final video = await VideoModel.fromJson(details);
+                final video = await VideoModel.fromJson(details);
 
-                  if (video != null) {
-                    videos.add(video);
-                  }
+                if (video != null) {
+                  videos.add(video);
                 }
               }
               return videos;
@@ -72,6 +71,7 @@ class YoutubeApiService {
           '$_baseUrl/videos?part=snippet,statistics,contentDetails&id=$videoId&key=$_apiKey');
 
       final response = await http.get(uri);
+      
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         final List<dynamic> items = data['items'];
@@ -82,5 +82,35 @@ class YoutubeApiService {
           'Video details API error: ${response.statusCode} - ${response.body}');
       return null;
     });
+  }
+
+  Future<List<Map<String, dynamic>>> fetchComments(String videoId) async {
+    return await Helper.handleRequest<List<Map<String, dynamic>>>(() async {
+          final uri = Uri.parse(
+              '$_baseUrl/commentThreads?part=snippet&videoId=$videoId&maxResults=20&key=$_apiKey');
+
+          final response = await http.get(uri);
+
+          if (response.statusCode == 200) {
+            final data = await json.decode(response.body);
+            final List<dynamic> items = data['items'];
+
+            return items.map((item) {
+              final snippet = item['snippet']['topLevelComment']['snippet'];
+              return {
+                'author': snippet['authorDisplayName'],
+                'authorProfileImage': snippet['authorProfileImage'],
+                'text': snippet['textDisplay'],
+                'likeCount': snippet['likeCount'],
+                'publishedAt': snippet['publishedAt'],
+              };
+            }).toList();
+          } else {
+            debugPrint(
+                'Comment API error: ${response.statusCode} - ${response.body}');
+            return [];
+          }
+        }) ??
+        [];
   }
 }
