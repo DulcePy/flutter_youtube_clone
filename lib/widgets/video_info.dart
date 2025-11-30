@@ -37,7 +37,7 @@ class VideoInfo extends StatelessWidget {
                 width: 8,
               ),
               Text(
-                "-",
+                "•",
                 style: TextStyle(color: Colors.grey[400]),
               ),
               const SizedBox(

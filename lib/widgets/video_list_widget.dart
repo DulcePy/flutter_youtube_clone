@@ -78,7 +78,7 @@ class VideoListWidget extends StatelessWidget {
                                 height: 4,
                               ),
                               Text(
-                                '${video.channelTitle} - ${video.viewCount} - ${video.publishedTime}',
+                                '${video.channelTitle} • ${video.viewCount} • ${video.publishedTime}',
                                 style: TextStyle(
                                     color: Colors.grey[400], fontSize: 14),
                               )
