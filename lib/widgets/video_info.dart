@@ -73,6 +73,8 @@ class VideoInfo extends StatelessWidget {
                 style:
                     TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
               )),
+          
+          
         ),
       ],
     );

@@ -257,7 +257,7 @@ class CommentsSection extends StatelessWidget {
                     width: 4,
                   ),
                   Text(
-                    comment['likeCount'].toString() ?? '0',
+                    comment['likeCount'].toString(),
                     style: const TextStyle(
                       color: Colors.white60,
                       fontSize: 16,
