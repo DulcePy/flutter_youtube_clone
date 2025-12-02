@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_youtube_clone/helper.dart';
+import 'package:flutter_youtube_clone/models/channel_model.dart';
 import 'package:flutter_youtube_clone/models/video_model.dart';
 import 'package:http/http.dart' as http;
 
@@ -112,5 +113,53 @@ class YoutubeApiService {
           }
         }) ??
         [];
+  }
+
+  Future<ChannelModel?> fetchChannelDetails(String channelId) async {
+    return await Helper.handleRequest<ChannelModel?>(() async {
+      final uri = Uri.parse('$_baseUrl/channels?part=snippet,statistics,brandingSettings&id=$channelId&key=$_apiKey');
+      final response = await http.get(uri);
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final List<dynamic> items = data['items'];
+        if (items.isNotEmpty) {
+          return ChannelModel.fromJson(items.first);
+        }
+      }
+
+      debugPrint('Channel API error: ${response.statusCode} - ${response.body}');
+      return null;
+    });
+  }
+
+  Future<List<VideoModel>> fetchChannelVideos(String channelId) async {
+    return await Helper.handleRequest<List<VideoModel>>(() async {
+      final uri = Uri.parse(
+          '$_baseUrl/search?part=snippet&channelId=$channelId&order=date&type=video&maxResults=15&key=$_apiKey');
+      final response = await http.get(uri);
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final List<dynamic> items = data['items'];
+        final List<VideoModel> videos = [];
+
+        for (var item in items) {
+          final videoId = item['id']['videoId'];
+          final details = await getVideoDetails(videoId);
+
+          if(details != null) {
+            final video = await VideoModel.fromJson(details);
+            if (video != null) {
+              videos.add(video);
+            }
+          }
+
+        }
+
+        return videos;
+
+      }
+
+    }) ?? [];
   }
 }
