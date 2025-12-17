@@ -72,7 +72,7 @@ class YoutubeApiService {
           '$_baseUrl/videos?part=snippet,statistics,contentDetails&id=$videoId&key=$_apiKey');
 
       final response = await http.get(uri);
-      
+
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         final List<dynamic> items = data['items'];
@@ -117,7 +117,8 @@ class YoutubeApiService {
 
   Future<ChannelModel?> fetchChannelDetails(String channelId) async {
     return await Helper.handleRequest<ChannelModel?>(() async {
-      final uri = Uri.parse('$_baseUrl/channels?part=snippet,statistics,brandingSettings&id=$channelId&key=$_apiKey');
+      final uri = Uri.parse(
+          '$_baseUrl/channels?part=snippet,statistics,brandingSettings&id=$channelId&key=$_apiKey');
       final response = await http.get(uri);
 
       if (response.statusCode == 200) {
@@ -128,38 +129,41 @@ class YoutubeApiService {
         }
       }
 
-      debugPrint('Channel API error: ${response.statusCode} - ${response.body}');
+      debugPrint(
+          'Channel API error: ${response.statusCode} - ${response.body}');
       return null;
     });
   }
 
   Future<List<VideoModel>> fetchChannelVideos(String channelId) async {
     return await Helper.handleRequest<List<VideoModel>>(() async {
-      final uri = Uri.parse(
-          '$_baseUrl/search?part=snippet&channelId=$channelId&order=date&type=video&maxResults=15&key=$_apiKey');
-      final response = await http.get(uri);
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        final List<dynamic> items = data['items'];
-        final List<VideoModel> videos = [];
+          final uri = Uri.parse(
+              '$_baseUrl/search?part=snippet&channelId=$channelId&order=date&type=video&maxResults=15&key=$_apiKey');
+          final response = await http.get(uri);
+          if (response.statusCode == 200) {
+            final data = json.decode(response.body);
+            final List<dynamic> items = data['items'];
+            final List<VideoModel> videos = [];
 
-        for (var item in items) {
-          final videoId = item['id']['videoId'];
-          final details = await getVideoDetails(videoId);
+            for (var item in items) {
+              final videoId = item['id']['videoId'];
+              final details = await getVideoDetails(videoId);
 
-          if(details != null) {
-            final video = await VideoModel.fromJson(details);
-            if (video != null) {
-              videos.add(video);
+              if (details != null) {
+                final video = await VideoModel.fromJson(details);
+                if (video != null) {
+                  videos.add(video);
+                }
+              }
             }
+
+            return videos;
           }
 
-        }
-
-        return videos;
-
-      }
-
-    }) ?? [];
+          debugPrint(
+              'Channel videos API error: ${response.statusCode} - ${response.body}');
+          return <VideoModel>[];
+        }) ??
+        [];
   }
 }

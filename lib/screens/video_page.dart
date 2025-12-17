@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_youtube_clone/helper.dart';
 import 'package:flutter_youtube_clone/models/video_model.dart';
+import 'package:flutter_youtube_clone/screens/channel_page.dart';
 import 'package:flutter_youtube_clone/services/youtube_api_service.dart';
 import 'package:flutter_youtube_clone/widgets/comments_section.dart';
 import 'package:flutter_youtube_clone/widgets/video_info.dart';
@@ -119,6 +120,12 @@ class _VideoPageState extends State<VideoPage> {
                                   video: widget.video,
                                   onChannelTap: () {
                                     _playerState.pause();
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => ChannelPage(
+                                                channelId:
+                                                    widget.video.channelId)));
                                   },
                                 ),
                                 CommentsSection(
