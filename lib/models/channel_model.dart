@@ -51,7 +51,7 @@ class ChannelModel {
       thumbnailUrl: snippet['thumbnails']?['default']?['url'] ?? '',
       bannerUrl: brandingSettings['image']?['bannerExternalUrl'] ?? '',
       subscriberCount: subscriberCountStr,
-      videoCount: '${statistics['videoCount']} ?? 0',
+      videoCount: '${statistics['videoCount']}' ?? '0',
       isVerified: snippet['isVerified'] ?? false,
       links: List<String>.from(snippet['links'] ?? []),
     );
